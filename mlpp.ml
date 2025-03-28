@@ -273,7 +273,7 @@ let replacements repl line =
     (line)
   else
     List.fold_left (fun line (macro,def) ->
-      replace_all line macro def
+      replace_all ~str:line ~sub:macro ~by:def
     ) line repl
 ;;
 
@@ -387,7 +387,7 @@ let () =
           if not(define_key line)
           then ((i,line)::acc), repl
           else begin
-            let line = replace line "#define" "" in
+            let line = replace ~str:line ~sub:"#define" ~by:"" in
             let line = strip line in
             let macro, def =
               try
@@ -425,7 +425,7 @@ let () =
           if not(include_key line)
           then ((i,line)::acc), false
           else begin
-            let line = replace line "#include" "" in
+            let line = replace ~str:line ~sub:"#include" ~by:"" in
             let filename = strip line ~chars:" \t\"" in
             check_incfile_exists filename;
             let line = Printf.sprintf "# 1 \"%s\" 1" filename in
@@ -456,7 +456,7 @@ let () =
           if not(ifdef_key line)
           then ((i,line)::acc, false), tail
           else begin
-            let line = replace line "#ifdef" "" in
+            let line = replace ~str:line ~sub:"#ifdef" ~by:"" in
             let mdef = strip line in
  
             let tail, if_part, else_part = if_else_parts main_file tail in

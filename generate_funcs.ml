@@ -98,25 +98,25 @@ let prepare_arg ((arg_type, pointer), arg_name) =
         at_call= "";
         prev_conv= "" }
   | "int", "" ->
-      { arg_name= arg_name ^":";
+      { arg_name= arg_name ^ " :";
         ml_type= "int";
         from_ml= arg_name;
         at_call= Printf.sprintf "Int_val(%s)" arg_name;
         prev_conv= "" }
   | "cpFloat", "" ->
-      { arg_name= arg_name ^":";
+      { arg_name= arg_name ^ " :";
         ml_type= "float";
         from_ml= arg_name;
         at_call= Printf.sprintf "Double_val(%s)" arg_name;
         prev_conv= "" }
   | _, "*" ->
-      { arg_name= arg_name ^":";
+      { arg_name= arg_name ^ " :";
         ml_type= arg_type;
         from_ml= arg_name;
         at_call= Printf.sprintf "(%s *) %s" arg_type arg_name;
         prev_conv= "" }
   | "cpVect", "" ->
-      { arg_name= arg_name ^":";
+      { arg_name= arg_name ^ " :";
         ml_type= "cpVect";
         from_ml= "ml_" ^ arg_name;
         at_call= arg_name;
@@ -222,7 +222,7 @@ let print_ml_func (func_type, func_name) argv_t =
   and bc_call =
     if len <= 5 then "" else (Printf.sprintf " \"ml_%s_bc\"" func_name)
   in
-  Printf.printf "\nexternal %s: %s %s" func_name ml_func_type ml_return;
+  Printf.printf "\nexternal %s : %s %s" func_name ml_func_type ml_return;
   Printf.printf " =%s \"ml_%s\"" bc_call func_name;
   print_newline();
 ;;

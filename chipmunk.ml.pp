@@ -57,9 +57,9 @@ external cpMomentForPoly: m:float -> verts:cpVect array -> offset:cpVect -> floa
 
 #ifdef MLI
 
-val vec2d: float * float -> cpVect
-val cpv: x:float -> y:float -> cpVect
-val cpvzero: unit -> cpVect
+val vec2d : float * float -> cpVect
+val cpv : float -> float -> cpVect
+val cpvzero : unit -> cpVect
 val cpvadd : v1:cpVect -> v2:cpVect -> cpVect
 val cpvrotate : v1:cpVect -> v2:cpVect -> cpVect
 val cpvneg : v:cpVect -> cpVect

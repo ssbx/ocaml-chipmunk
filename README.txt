@@ -1,4 +1,6 @@
 
+NOT WORKING: See problems.txt for API migration issues.
+
   This archive contains OCaml bindings for the
   Chipmunk 2D physics library.
 

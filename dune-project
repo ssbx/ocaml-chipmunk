@@ -15,6 +15,8 @@
 
 (documentation https://url/to/documentation)
 
+(use_standard_c_and_cxx_flags true)
+
 (package
  (name chipmunk)
  (synopsis "A short synopsis")

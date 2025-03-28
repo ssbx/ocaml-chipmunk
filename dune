@@ -1,0 +1,14 @@
+
+(library
+ (public_name chipmunk)
+ (name chipmunk)
+ (modes native)
+ (foreign_stubs
+  (language c)
+  (names
+    cpspace_stub
+    cpbody_stub
+    cpshape_stub
+    )
+  (flags :standard))
+ (c_library_flags -lchipmunk))

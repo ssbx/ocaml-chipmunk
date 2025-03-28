@@ -1,11 +1,2 @@
 *swp
-chipmunk.cmi
-chipmunk.cmo
-chipmunk.gen.ml
-chipmunk.ml
-chipmunk.mli
-mlpp.cmi
-mlpp.cmx
-mlpp.exe
-mlpp.o
-wrap_chipmunk.gen.c
+_build

@@ -137,12 +137,14 @@ clean-doc:
 
 # clean
 clean: clean-doc
-	rm -f \
-	    *.[oa] *.so *.cm[ixoa] *.cmxa *.opt *~  \
-	    doc/*.{html,css}  \
-	    *.gen.{ml,c}  chipmunk.ml{,i}  \
-	    oo.mli  log* 
+	rm -f chipmunk.gen.ml
+	rm -f chipmunk.ml
+	rm -f chipmunk.mli
+	rm -f mlpp.exe
+	rm -f wrap_chipmunk.gen.c
+	rm -f *.cmi *.cmo *.cmx mlpp.o
 
+ 
 # demo
 DEMO=./demos/moon_buggy.ml
 demo: cp_ml_demo.opt

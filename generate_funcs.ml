@@ -136,10 +136,12 @@ let args_call_f arr_arg len =
     Buffer.add_string buf (
       Printf.sprintf " %s," arr_arg.(i).at_call)
   done;
-  let len = Buffer.length buf
+  Buffer.add_char buf ' ';
+  Buffer.contents buf
+  (*let len = Buffer.length buf
   and content = Buffer.contents buf in
   content.[pred len] <- ' ';
-  (content)
+  (content)*)
 ;;
 
 
@@ -149,10 +151,12 @@ let from_ml_f arr_arg len =
     Buffer.add_string buf (
       Printf.sprintf " value %s," arr_arg.(i).from_ml)
   done;
-  let len = Buffer.length buf
+  Buffer.add_char buf ' ';
+  (*let len = Buffer.length buf
   and content = Buffer.contents buf in
   content.[pred len] <- ' ';
-  (content)
+  (content)*)
+  Buffer.contents buf
 ;;
 
 
@@ -227,8 +231,10 @@ let print_ml_func (func_type, func_name) argv_t =
 let print_bc_func func_name len =
   let rec aux i acc =
     if i >= len then 
+      (*
       let len = String.length acc in
-      (acc.[pred len] <- ' '; acc)
+      (acc.[pred len] <- ' '; acc)*)
+      acc ^ " "
     else
       let arg = Printf.sprintf " argv[%d]," i in
       aux (succ i) (acc ^ arg)

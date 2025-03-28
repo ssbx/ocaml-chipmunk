@@ -7,6 +7,7 @@
 #include "cpspace_stub.h"
 #include "cpvect_stub.h"
 #include "cpbody_stub.h"
+#include "cpshape_stub.h"
 
 CAMLprim value
 caml_cpSpaceNew(value unit)
@@ -41,8 +42,34 @@ caml_cpSpaceGetStaticBody(value space)
 {
     CAMLparam1(space);
     cpBody* body = cpSpaceGetStaticBody(cpSpace_Val(space));
-    if (body == NULL) caml_failwith("cpSpaceGetStaticBody");
     CAMLreturn(Val_cpBody(body));
 }
+
+CAMLprim value
+caml_cpSpaceAddShape(value space, value shape)
+{
+    CAMLparam2(space, shape);
+    cpSpaceAddShape(cpSpace_Val(space), cpShape_Val(shape));
+    CAMLreturn(Val_unit);
+}
+
+CAMLprim value
+caml_cpSpaceAddBody(value space, value body)
+{
+    CAMLparam2(space, body);
+    cpSpaceAddBody(cpSpace_Val(space), cpBody_Val(body));
+    CAMLreturn(Val_unit);
+}
+
+CAMLprim value
+caml_cpSpaceStep(value space, value dt)
+{
+    CAMLparam2(space, dt);
+    cpSpaceStep(cpSpace_Val(space), Double_val(dt));
+    CAMLreturn(Val_unit);
+}
+
+
+
 
 

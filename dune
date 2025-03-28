@@ -9,6 +9,7 @@
     cpspace_stub
     cpbody_stub
     cpshape_stub
+    cputils_stub
     )
   (flags :standard))
  (c_library_flags -lchipmunk))

@@ -83,7 +83,7 @@ val cpvtoangle : v:cpVect -> float
 (* ML *)
 
 let vec2d (x,y) = { cp_x=x; cp_y=y }
-let cpv ~x ~y = { cp_x=x; cp_y=y }
+let cpv x y = { cp_x=x; cp_y=y }
 
 let cpvzero () = { cp_x=0.0; cp_y=0.0 }
 
@@ -111,7 +111,7 @@ let cpvperp ~v = cpv (-. v.cp_y) (v.cp_x) ;;
 
 let cpvrperp ~v = cpv (v.cp_y) (-. v.cp_x) ;;
 
-let cpvproject ~v1 ~v2 = cpvmult v2 ((cpvdot v1 v2)/.(cpvdot v2 v2)) ;;
+let cpvproject ~v1 ~v2 = cpvmult ~v:v2 ~s:((cpvdot ~v1 ~v2)/.(cpvdot ~v1:v2 ~v2:v2)) ;;
 
 let cpvrotate ~v1 ~v2 = cpv (v1.cp_x *. v2.cp_x -. v1.cp_y *. v2.cp_y)
                             (v1.cp_x *. v2.cp_y +. v1.cp_y *. v2.cp_x) ;;
@@ -119,11 +119,11 @@ let cpvrotate ~v1 ~v2 = cpv (v1.cp_x *. v2.cp_x -. v1.cp_y *. v2.cp_y)
 let cpvunrotate ~v1 ~v2 = cpv (v1.cp_x *. v2.cp_x +. v1.cp_y *. v2.cp_y)
                               (v1.cp_y *. v2.cp_x -. v1.cp_x *. v2.cp_y) ;;
 
-let cpvlength ~v = sqrt(cpvdot v v) ;;
+let cpvlength ~v = sqrt(cpvdot ~v1:v ~v2:v) ;;
 
-let cpvlengthsq ~v = cpvdot v v ;;
+let cpvlengthsq ~v = cpvdot ~v1:v ~v2:v ;;
 
-let cpvnormalize ~v = cpvmult v (1.0 /. cpvlength v) ;;
+let cpvnormalize ~v = cpvmult ~v ~s:(1.0 /. cpvlength ~v) ;;
 
 let cpvforangle ~a = cpv (cos a) (sin a) ;;
 
@@ -826,7 +826,7 @@ class cp_body ~m ~i =
 
     method body = body
 
-    method free = cpBodyFree body
+    method free = cpBodyFree ~body
 
     method slew               = cpBodySlew ~body
     method update_velocity    = cpBodyUpdateVelocity ~body
@@ -875,7 +875,7 @@ let to_cp_body ~body =
 
     method body = body
 
-    method free = cpBodyFree body
+    method free = cpBodyFree ~body
 
     method slew               = cpBodySlew ~body
     method update_velocity    = cpBodyUpdateVelocity ~body
@@ -1241,7 +1241,7 @@ class cp_shape ~body:(_body :cp_body_virt) ~kind:_kind =
     method set_friction   = cpShapeSetFriction ~shape
     (** Coefficient of friction. *)
 
-    method set_surface_vel ~surface_vel = cpShapeSetSurfaceV shape surface_vel
+    method set_surface_vel ~surface_vel = cpShapeSetSurfaceV ~shape ~surface_v:surface_vel
     method get_surface_vel  = cpShapeGetSurfaceV ~shape
     (** Surface velocity used when solving for friction. *)
 
@@ -1270,7 +1270,7 @@ let to_cp_shape ~shape =
     method shape = shape
 
     method kind = cpShapeGetType ~shape
-    method body = to_cp_body (cpShapeGetBody ~shape)
+    method body = to_cp_body ~body:(cpShapeGetBody ~shape)
 
     method get_circle_shape  = new cp_circle_shape ~shape:self
     method get_segment_shape = new cp_segment_shape ~shape:self
@@ -1282,7 +1282,7 @@ let to_cp_shape ~shape =
 
     method set_elasticity = cpShapeSetElasticity ~shape
     method set_friction   = cpShapeSetFriction ~shape
-    method set_surface_vel ~surface_vel  = cpShapeSetSurfaceV shape surface_vel
+    method set_surface_vel ~surface_vel  = cpShapeSetSurfaceV ~shape ~surface_v:surface_vel
 
     method get_elasticity  = cpShapeGetElasticity ~shape
     method get_friction    = cpShapeGetFriction ~shape

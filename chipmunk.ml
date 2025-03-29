@@ -18,11 +18,15 @@ external cpSpaceNew : unit -> (Space.t [@unboxed]) =
 external cpSpaceFree : (Space.t [@unboxed]) -> unit =
   "caml_cpSpaceFree_byte" "caml_cpSpaceFree" [@@noalloc]
 
+(* TODO test benefices *)
 external cpSpaceSetGravity : Space.t -> Vect.t -> unit =
   "caml_cpSpaceSetGravity"
 external cpSpaceSetGravity_unbox :
   (Space.t [@unboxed]) -> (float [@unboxed]) -> (float [@unboxed]) -> unit =
   "caml_cpSpaceSetGravity_byte_unbox" "caml_cpSpaceSetGravity_unbox" [@@noalloc]
+
+let cpSpaceSetGravity2 space (v : Vect.t) =
+  cpSpaceSetGravity_unbox space v.x v.y
 
 external cpSpaceGetStaticBody : Space.t -> Body.t =
   "caml_cpSpaceGetStaticBody"

@@ -10,7 +10,7 @@
 #include "cpshape_stub.h"
 
 CAMLprim value
-caml_cpSpaceNew_byte(value unit)
+caml_cpSpaceNew(value unit)
 {
     CAMLparam0();
     cpSpace *space = cpSpaceNew();
@@ -19,29 +19,12 @@ caml_cpSpaceNew_byte(value unit)
     CAMLreturn(Val_cpSpace(space));
 }
 
-CAMLprim cpSpace*
-caml_cpSpaceNew()
-{
-    cpSpace *space = cpSpaceNew();
-    if (space == NULL) caml_failwith("cpSpaceNew");
-
-    return space;
-}
-
-
-
 CAMLprim value
-caml_cpSpaceFree_byte(value space)
+caml_cpSpaceFree(value space)
 {
     CAMLparam1(space);
     cpSpaceFree(cpSpace_Val(space));
     CAMLreturn(Val_unit);
-}
-
-CAMLprim void
-caml_cpSpaceFree(cpSpace* space)
-{
-  cpSpaceFree(space);
 }
 
 CAMLprim value
@@ -55,24 +38,11 @@ caml_cpSpaceSetGravity(value space, value _vect)
 }
 
 CAMLprim value
-caml_cpSpaceSetGravity_unbox_byte(value space, value x, value y)
-{
-    CAMLparam3(space, x, y);
-    cpVect gravity = cpv(Double_val(x), Double_val(y));
-    cpSpaceSetGravity(cpSpace_Val(space), gravity);
-    CAMLreturn(Val_unit);
-}
-
-
-
-CAMLprim value
 caml_cpSpaceSetGravity_unbox(cpSpace* space, double x, double y)
 {
     cpVect gravity = cpv(x,y);
     cpSpaceSetGravity(space, gravity);
 }
-
-
 
 CAMLprim value
 caml_cpSpaceGetStaticBody(value space)

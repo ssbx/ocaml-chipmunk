@@ -13,36 +13,26 @@ module Vect = struct
   let make ~x ~y = {x; y}
 end
 
-external cpSpaceNew : unit -> (Space.t [@unboxed]) =
-  "caml_cpSpaceNew_byte" "caml_cpSpaceNew" [@@noalloc]
-external cpSpaceFree : (Space.t [@unboxed]) -> unit =
-  "caml_cpSpaceFree_byte" "caml_cpSpaceFree" [@@noalloc]
-
-(* TODO test benefices *)
+external cpSpaceNew : unit -> Space.t =
+  "caml_cpSpaceNew" 
+external cpSpaceFree : Space.t -> unit =
+  "caml_cpSpaceFree" [@@noalloc]
 external cpSpaceSetGravity : Space.t -> Vect.t -> unit =
-  "caml_cpSpaceSetGravity"
-external cpSpaceSetGravity_unbox :
-  (Space.t [@unboxed]) -> (float [@unboxed]) -> (float [@unboxed]) -> unit =
-  "caml_cpSpaceSetGravity_byte_unbox" "caml_cpSpaceSetGravity_unbox" [@@noalloc]
-
-let cpSpaceSetGravity2 space (v : Vect.t) =
-  cpSpaceSetGravity_unbox space v.x v.y
-
+  "caml_cpSpaceSetGravity" [@@noalloc]
 external cpSpaceGetStaticBody : Space.t -> Body.t =
   "caml_cpSpaceGetStaticBody"
 external cpBodyFree : Body.t -> unit =
-  "caml_cpBodyFree"
+  "caml_cpBodyFree" [@@noalloc]
 external cpShapeSetFriction : Shape.t -> float -> unit =
-  "caml_cpShapeSetFriction"
+  "caml_cpShapeSetFriction" [@@noalloc]
 external cpSegmentShapeNew : Body.t -> Vect.t -> Vect.t -> float -> Shape.t
   = "caml_cpSegmentShapeNew"
 external cpShapeFree : Shape.t -> unit =
-  "caml_cpShapeFree"
+  "caml_cpShapeFree" [@@noalloc]
 
 (** differ from the original api *)
 external cpSpaceAddShape : Space.t -> Shape.t -> unit =
-  "caml_cpSpaceAddShape"
-
+  "caml_cpSpaceAddShape" [@@noalloc]
 external cpMomentForCircle : float -> float -> float -> Vect.t -> float
   = "caml_cpMomentForCircle"
 external cpBodyNew : float -> float -> Body.t
@@ -50,9 +40,9 @@ external cpBodyNew : float -> float -> Body.t
 
 (** differ from the original api *)
 external cpSpaceAddBody : Space.t -> Body.t -> unit =
-  "caml_cpSpaceAddBody"
+  "caml_cpSpaceAddBody" [@@noalloc]
 external cpBodySetPosition : Body.t -> Vect.t -> unit =
-  "caml_cpBodySetPosition"
+  "caml_cpBodySetPosition" [@@noalloc]
 external cpCircleShapeNew : Body.t -> float -> Vect.t -> Shape.t
   = "caml_cpCircleShapeNew"
 external cpBodyGetPosition : Body.t -> Vect.t =
@@ -60,5 +50,5 @@ external cpBodyGetPosition : Body.t -> Vect.t =
 external cpBodyGetVelocity : Body.t -> Vect.t =
   "caml_cpBodyGetVelocity"
 external cpSpaceStep : Space.t -> float -> unit =
-  "caml_cpSpaceStep"
+  "caml_cpSpaceStep" [@@noalloc]
 

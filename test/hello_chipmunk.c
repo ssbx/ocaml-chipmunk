@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <chipmunk.h>
+#include <chipmunk/chipmunk.h>
 
 int main(void){
   // cpVect is a 2D vector and cpv() is a shortcut for initializing them.

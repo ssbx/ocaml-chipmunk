@@ -27,11 +27,11 @@ let () =
   let static_body = Ck.cpSpaceGetStaticBody space in
   print_endline "cpSpaceGetStaticBody success";
 
-  let _grabbable_filter = Ck.ShapeFilter.make 
+  let _const_grabbable_filter = Ck.ShapeFilter.make 
     ~group:Ck.ShapeFilter.const_no_group
     ~categories:Ck.ShapeFilter.const_grabbable_mask_bit
     ~mask:Ck.ShapeFilter.const_grabbable_mask_bit
-  and not_grabbable_filter = Ck.ShapeFilter.make 
+  and const_not_grabbable_filter = Ck.ShapeFilter.make 
     ~group:Ck.ShapeFilter.const_no_group
     ~categories:(Int.lognot Ck.ShapeFilter.const_grabbable_mask_bit)
     ~mask:(Int.lognot Ck.ShapeFilter.const_grabbable_mask_bit)
@@ -43,28 +43,28 @@ let () =
   let h1 = Ck.cpSegmentShapeNew static_body va1 vb1 0. in
   Ck.cpShapeSetElasticity h1 1.;
   Ck.cpShapeSetFriction h1 1.;
-  Ck.cpShapeSetFilter h1 not_grabbable_filter;
+  Ck.cpShapeSetFilter h1 const_not_grabbable_filter;
 
   let va2 = Ck.Vect.make ~x:(320.) ~y:(-240.)
   and vb2 = Ck.Vect.make ~x:(320.) ~y:(240.) in
   let h2 = Ck.cpSegmentShapeNew static_body va2 vb2 0. in
   Ck.cpShapeSetElasticity h2 1.;
   Ck.cpShapeSetFriction h2 1.;
-  Ck.cpShapeSetFilter h2 not_grabbable_filter;
+  Ck.cpShapeSetFilter h2 const_not_grabbable_filter;
 
   let va3 = Ck.Vect.make ~x:(-320.) ~y:(-240.)
   and vb3 = Ck.Vect.make ~x:(320.) ~y:(-240.) in
   let h3 = Ck.cpSegmentShapeNew static_body va3 vb3 0. in
   Ck.cpShapeSetElasticity h3 1.;
   Ck.cpShapeSetFriction h3 1.;
-  Ck.cpShapeSetFilter h3 not_grabbable_filter;
+  Ck.cpShapeSetFilter h3 const_not_grabbable_filter;
 
   let va4 = Ck.Vect.make ~x:(-320.) ~y:(240.)
   and vb4 = Ck.Vect.make ~x:(320.) ~y:(240.) in
   let h4 = Ck.cpSegmentShapeNew static_body va4 vb4 0. in
   Ck.cpShapeSetElasticity h4 1.;
   Ck.cpShapeSetFriction h4 1.;
-  Ck.cpShapeSetFilter h4 not_grabbable_filter;
+  Ck.cpShapeSetFilter h4 const_not_grabbable_filter;
 
   print_endline "create hedges success";
 

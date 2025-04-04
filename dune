@@ -10,6 +10,9 @@
     cpbody_stub
     cpshape_stub
     cputils_stub
+    cppivotjoint_stub
+    cpconstraint_stub
+    cpgearjoint_stub
     )
   (flags :standard))
  (c_library_flags -lchipmunk))

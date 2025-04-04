@@ -12,12 +12,13 @@ module ShapeFilter = struct
   let const_no_group                = 0
   let const_all_categories          = (Int.lognot 0)
   let const_wildcard_collision_type = (Int.lognot 0)
-  let make ~group ~categories ~mask = 
+  let make ~group ~categories ~mask =
     ({ group      = group
      ; categories = categories
      ; mask       = mask } : t)
-
 end
+module Constraint = struct type t = nativeint end
+module PivotJoint = struct type t = nativeint end
 
 module Vect = struct
   type t =
@@ -25,14 +26,13 @@ module Vect = struct
     ; y : float }
 
   let zero = ({ x = 0.; y = 0. } : t)
-
   let make ~x ~y = {x; y}
   let length v = Float.sqrt (v.x *. v.x +. v.y *. v.y)
 end
 
 
 external cpSpaceNew : unit -> Space.t =
-  "caml_cpSpaceNew" 
+  "caml_cpSpaceNew"
 external cpSpaceFree : Space.t -> unit =
   "caml_cpSpaceFree" [@@noalloc]
 external cpSpaceSetGravity : Space.t -> Vect.t -> unit =
@@ -69,17 +69,30 @@ external cpBodyGetVelocity : Body.t -> Vect.t =
   "caml_cpBodyGetVelocity"
 external cpSpaceStep : Space.t -> float -> unit =
   "caml_cpSpaceStep" [@@noalloc]
-external cpSpaceSetIterations : Space.t -> int -> unit = 
+external cpSpaceSetIterations : Space.t -> int -> unit =
   "caml_cpSpaceSetIterations" [@@noalloc]
-external cpSpaceSetSleepTimeThreshold : Space.t -> float -> unit = 
+external cpSpaceSetSleepTimeThreshold : Space.t -> float -> unit =
   "caml_cpSpaceSetSleepTimeThreshold" [@@noalloc]
-external cpShapeSetElasticity : Shape.t -> float -> unit = 
+external cpShapeSetElasticity : Shape.t -> float -> unit =
   "caml_cpShapeSetElasticity" [@@noalloc]
-external cpShapeSetFilter : Shape.t -> ShapeFilter.t -> unit = 
-  "caml_cpShapeSetFilter" 
-external cpBodyNewKinematic : unit -> Body.t = 
-  "caml_cpBodyNewKinematic" 
+external cpShapeSetFilter : Shape.t -> ShapeFilter.t -> unit =
+  "caml_cpShapeSetFilter"
+external cpBodyNewKinematic : unit -> Body.t =
+  "caml_cpBodyNewKinematic"
 external cpMomentForBox : float -> float -> float -> float =
-  "caml_cpMomentForBox" 
+  "caml_cpMomentForBox"
 external cpBoxShapeNew : Body.t -> float -> float -> float -> Shape.t =
-  "caml_cpBoxShapeNew" 
+  "caml_cpBoxShapeNew"
+external cpPivotJointNew2 : Body.t -> Body.t -> Vect.t -> Vect.t
+  -> Constraint.t = "caml_cpPivotJointNew2"
+external cpConstraintSetMaxBias : Constraint.t -> float -> unit =
+  "caml_cpConstraintSetMaxBias"
+external cpConstraintSetMaxForce : Constraint.t -> float -> unit =
+  "caml_cpConstraintSetMaxForce"
+external cpGearJointNew : Body.t -> Body.t-> float -> float -> Constraint.t =
+  "caml_cpGearJointNew"
+external cpConstraintSetErrorBias : Constraint.t -> float -> unit =
+  "caml_cpConstraintSetErrorBias"
+external cpSpaceAddConstraint : Space.t -> Constraint.t -> unit =
+  "caml_cpSpaceAddConstraint"
+

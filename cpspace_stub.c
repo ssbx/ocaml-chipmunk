@@ -5,6 +5,7 @@
 #include <caml/fail.h>
 
 #include "cpspace_stub.h"
+#include "cpconstraint_stub.h"
 #include "cpvect_stub.h"
 #include "cpbody_stub.h"
 #include "cpshape_stub.h"
@@ -89,6 +90,14 @@ caml_cpSpaceSetSleepTimeThreshold(value space, value thresh)
 {
     CAMLparam2(space, thresh);
     cpSpaceSetSleepTimeThreshold(cpSpace_Val(space), Double_val(thresh));
+    CAMLreturn(Val_unit);
+}
+
+CAMLprim value
+caml_cpSpaceAddConstraint(value space, value constraint)
+{
+    CAMLparam2(space, constraint);
+    cpSpaceAddConstraint(cpSpace_Val(space), cpConstraint_Val(constraint));
     CAMLreturn(Val_unit);
 }
 

@@ -1,6 +1,6 @@
 module Ck = Chipmunk
 
-let add_body space size mass =
+let add_box space size mass =
   let radius = Ck.Vect.make ~x:size ~y:size |> Ck.Vect.length in
   let body = Ck.cpBodyNew mass (Ck.cpMomentForBox mass size size) in
   let rand_pos = Ck.Vect.make
@@ -13,7 +13,7 @@ let add_body space size mass =
   Ck.cpShapeSetFriction shape 0.7;
   body
 
-let () = 
+let () =
 
   let space = Ck.cpSpaceNew () in
   print_endline "cpSpaceNew success";
@@ -27,11 +27,11 @@ let () =
   let static_body = Ck.cpSpaceGetStaticBody space in
   print_endline "cpSpaceGetStaticBody success";
 
-  let _const_grabbable_filter = Ck.ShapeFilter.make 
+  let _const_grabbable_filter = Ck.ShapeFilter.make
     ~group:Ck.ShapeFilter.const_no_group
     ~categories:Ck.ShapeFilter.const_grabbable_mask_bit
     ~mask:Ck.ShapeFilter.const_grabbable_mask_bit
-  and const_not_grabbable_filter = Ck.ShapeFilter.make 
+  and const_not_grabbable_filter = Ck.ShapeFilter.make
     ~group:Ck.ShapeFilter.const_no_group
     ~categories:(Int.lognot Ck.ShapeFilter.const_grabbable_mask_bit)
     ~mask:(Int.lognot Ck.ShapeFilter.const_grabbable_mask_bit)
@@ -68,68 +68,32 @@ let () =
 
   print_endline "create hedges success";
 
-  (* TODO fir i.. add_box *)
-
+  for _ = 1 to 50 do (
+    let body = add_box space 20. 1. in
+    let pivot = Ck.cpPivotJointNew2 static_body body Ck.Vect.zero Ck.Vect.zero in
+    Ck.cpSpaceAddConstraint space pivot;
+    Ck.cpConstraintSetMaxBias pivot 0.;
+    Ck.cpConstraintSetMaxForce pivot 1000.;
+    let gear = Ck.cpGearJointNew static_body body 0. 0. in
+    Ck.cpSpaceAddConstraint space gear;
+    Ck.cpConstraintSetMaxBias gear 0.;
+    Ck.cpConstraintSetMaxForce gear 5000.
+  ) done;
 
   let tank_control_body = Ck.cpBodyNewKinematic () in
   Ck.cpSpaceAddBody space tank_control_body;
-  let tank_body = add_body space 30. 10. in
+  let tank_body = add_box space 30. 10. in
+  let pivot = Ck.cpPivotJointNew2 tank_control_body tank_body
+    Ck.Vect.zero Ck.Vect.zero in
+  Ck.cpSpaceAddConstraint space pivot;
+  Ck.cpConstraintSetMaxBias pivot 0.;
+  Ck.cpConstraintSetMaxForce pivot 100000.;
+  let gear = Ck.cpGearJointNew tank_control_body tank_body 0. 1. in
+  Ck.cpSpaceAddConstraint space gear;
+  Ck.cpConstraintSetErrorBias gear 0.;
+  Ck.cpConstraintSetMaxBias gear 1.2;
+  Ck.cpConstraintSetMaxForce gear 50000.;
 
-  (*
-  let gravity = Ck.Vect.make ~x:0. ~y:(-100.) in
-
-  Unix.sleep 1;
-  Ck.cpSpaceSetGravity space gravity;
-  print_endline "cpSpaceSetGravity success";
-
-  Ck.cpShapeSetFriction ground 1.;
-  print_endline "cpShapeSetFriction success";
-
-  Ck.cpSpaceAddShape space ground;
-  print_endline "cpSpaceAddShape success";
-
-  let radius = 5.
-  and mass = 1. in
-  let moment = Ck.cpMomentForCircle mass 0. radius Ck.Vect.zero in
-  print_endline "cpMomentForCircle success";
-  Printf.printf "moment is %f\n" moment;
-
-  let ball_body = Ck.cpBodyNew mass moment in
-  print_endline "cpBodyNew success";
-
-  Ck.cpSpaceAddBody space ball_body;
-  print_endline "cpSpaceAddBody success";
-
-  let position = Ck.Vect.make ~x:0. ~y:15. in
-  Ck.cpBodySetPosition ball_body position;
-  print_endline "cpBodySetPosition success";
-
-  let ball_shape = Ck.cpCircleShapeNew ball_body radius Ck.Vect.zero  in
-  print_endline "cpCircleShapeNew success";
-
-  Ck.cpSpaceAddShape space ball_shape;
-  print_endline "cpSpaceAddShape success";
-
-  Ck.cpShapeSetFriction ball_shape 0.7;
-  print_endline "cpShapeSetFriction success";
-
-  let timestep = 1. /. 60. in
-  let rec loop time =
-    let pos = Ck.cpBodyGetPosition ball_body
-    and vel = Ck.cpBodyGetVelocity ball_body in
-    Printf.printf "Time is %f. ball is at (%f %f) with velocity (%f %f)\n"
-      time pos.x pos.y vel.x vel.y;
-    Ck.cpSpaceStep space timestep;
-    if time < 2. then loop (time +. timestep)
-  in
-
-  loop 0.;
-
-  Ck.cpShapeFree ball_shape;
-  print_endline "cpShapeFree success";
-  Ck.cpBodyFree ball_body;
-  print_endline "cpBodyFree success";
-  *)
 
   Ck.cpBodyFree tank_control_body;
   Ck.cpBodyFree tank_body;

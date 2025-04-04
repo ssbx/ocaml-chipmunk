@@ -2,6 +2,22 @@
 module Space = struct type t = nativeint end
 module Body = struct type t = nativeint end
 module Shape = struct type t = nativeint end
+module ShapeFilter = struct
+  type t =
+    { group       : int
+    ; categories  : int
+    ; mask        : int }
+
+  let const_grabbable_mask_bit      = (Int.shift_left 1 31)
+  let const_no_group                = 0
+  let const_all_categories          = (Int.lognot 0)
+  let const_wildcard_collision_type = (Int.lognot 0)
+  let make ~group ~categories ~mask = 
+    ({ group      = group
+     ; categories = categories
+     ; mask       = mask } : t)
+
+end
 
 module Vect = struct
   type t =
@@ -11,7 +27,9 @@ module Vect = struct
   let zero = ({ x = 0.; y = 0. } : t)
 
   let make ~x ~y = {x; y}
+  let length v = Float.sqrt (v.x *. v.x +. v.y *. v.y)
 end
+
 
 external cpSpaceNew : unit -> Space.t =
   "caml_cpSpaceNew" 
@@ -51,4 +69,17 @@ external cpBodyGetVelocity : Body.t -> Vect.t =
   "caml_cpBodyGetVelocity"
 external cpSpaceStep : Space.t -> float -> unit =
   "caml_cpSpaceStep" [@@noalloc]
-
+external cpSpaceSetIterations : Space.t -> int -> unit = 
+  "caml_cpSpaceSetIterations" [@@noalloc]
+external cpSpaceSetSleepTimeThreshold : Space.t -> float -> unit = 
+  "caml_cpSpaceSetSleepTimeThreshold" [@@noalloc]
+external cpShapeSetElasticity : Shape.t -> float -> unit = 
+  "caml_cpShapeSetElasticity" [@@noalloc]
+external cpShapeSetFilter : Shape.t -> ShapeFilter.t -> unit = 
+  "caml_cpShapeSetFilter" 
+external cpBodyNewKinematic : unit -> Body.t = 
+  "caml_cpBodyNewKinematic" 
+external cpMomentForBox : float -> float -> float -> float =
+  "caml_cpMomentForBox" 
+external cpBoxShapeNew : Body.t -> float -> float -> float -> Shape.t =
+  "caml_cpBoxShapeNew" 

@@ -52,4 +52,39 @@ caml_cpCircleShapeNew(value body, value radius, value _offset)
     CAMLreturn(Val_cpShape(circle));
 }
 
+CAMLprim value
+caml_cpBoxShapeNew(value body, value s1, value s2, value s3)
+{
+    CAMLparam4(body, s1, s2, s3);
+    cpShape* box = cpBoxShapeNew(
+      cpBody_Val(body), Double_val(s1), Double_val(s2), Double_val(s3));
+
+    if (box == NULL) caml_failwith("cpBoxShapeNew fail");
+
+    CAMLreturn(Val_cpShape(box));
+}
+
+
+
+CAMLprim value
+caml_cpShapeSetElasticity(value shape, value elasticity)
+{
+    CAMLparam2(shape, elasticity);
+    cpShapeSetElasticity(cpShape_Val(shape), Double_val(elasticity));
+    CAMLreturn(Val_unit);
+}
+
+CAMLprim value
+caml_cpShapeSetFilter(value shape, value _filter)
+{
+    CAMLparam2(shape, _filter);
+    cpShapeFilter filter;
+    cpShapeFilter_Val(&filter, _filter);
+    cpShapeSetFilter(cpShape_Val(shape), filter);
+    CAMLreturn(Val_unit);
+}
+
+
+
+
 

@@ -22,3 +22,11 @@ caml_cpMomentForCircle(value m, value r1, value r2, value _offset)
 
     return caml_copy_double(r);
 }
+
+CAMLprim value
+caml_cpMomentForBox(value mass, value v1, value v2)
+{
+    CAMLparam3(mass, v1, v2);
+    float r = cpMomentForBox(Double_val(mass), Double_val(v1), Double_val(v2));
+    return caml_copy_double(r);
+}

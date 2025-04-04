@@ -55,5 +55,15 @@ caml_cpBodyGetVelocity(value body)
     CAMLreturn(ret);
 }
 
+CAMLprim value
+caml_cpBodyNewKinematic(value unit)
+{
+    CAMLparam1(unit);
+    cpBody* body = cpBodyNewKinematic();
+    if (body == NULL) caml_failwith("cpBodyNewKinematic fails");
+    CAMLreturn(Val_cpBody(body));
+}
+
+
 
 

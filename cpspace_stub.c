@@ -76,7 +76,19 @@ caml_cpSpaceStep(value space, value dt)
     CAMLreturn(Val_unit);
 }
 
+CAMLprim value
+caml_cpSpaceSetIterations(value space, value num)
+{
+    CAMLparam2(space, num);
+    cpSpaceSetIterations(cpSpace_Val(space), Int_val(num));
+    CAMLreturn(Val_unit);
+}
 
-
-
+CAMLprim value
+caml_cpSpaceSetSleepTimeThreshold(value space, value thresh)
+{
+    CAMLparam2(space, thresh);
+    cpSpaceSetSleepTimeThreshold(cpSpace_Val(space), Double_val(thresh));
+    CAMLreturn(Val_unit);
+}
 

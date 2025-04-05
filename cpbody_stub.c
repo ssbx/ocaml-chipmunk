@@ -56,6 +56,16 @@ caml_cpBodyGetVelocity(value body)
 }
 
 CAMLprim value
+caml_cpBodyGetRotation(value body)
+{
+    CAMLparam1(body);
+    CAMLlocal1(ret);
+    cpVect vel = cpBodyGetRotation(cpBody_Val(body));
+    Val_cpVect(ret, &vel);
+    CAMLreturn(ret);
+}
+
+CAMLprim value
 caml_cpBodyNewKinematic(value unit)
 {
     CAMLparam1(unit);
@@ -63,6 +73,35 @@ caml_cpBodyNewKinematic(value unit)
     if (body == NULL) caml_failwith("cpBodyNewKinematic fails");
     CAMLreturn(Val_cpBody(body));
 }
+
+CAMLprim value
+caml_cpBodySetAngle(value body, value angle)
+{
+    CAMLparam2(body, angle);
+    cpBodySetAngle(cpBody_Val(body), Double_val(angle));
+    CAMLreturn(Val_unit);
+}
+
+CAMLprim value
+caml_cpBodyGetAngle(value body)
+{
+    CAMLparam1(body);
+    double a = cpBodyGetAngle(cpBody_Val(body));
+    return caml_copy_double(a);
+}
+
+CAMLprim value
+caml_cpBodySetVelocity(value body, value _vel)
+{
+    CAMLparam2(body, _vel);
+    cpVect vel;
+    cpVect_Val(&vel, _vel);
+    cpBodySetVelocity(cpBody_Val(body), vel);
+    CAMLreturn(Val_unit);
+}
+
+
+
 
 
 

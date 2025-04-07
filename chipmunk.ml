@@ -1,5 +1,6 @@
 
 module Cp = struct
+
   module Space = struct type t = nativeint end
   module Body = struct type t = nativeint end
   module Shape = struct type t = nativeint end
@@ -29,78 +30,79 @@ module Cp = struct
     let length v = Float.sqrt (v.x *. v.x +. v.y *. v.y)
   end
 
-  external spaceNew : unit -> Space.t =
+  external space_new : unit -> Space.t =
     "caml_cpSpaceNew"
-  external spaceFree : Space.t -> unit =
+  external space_free : Space.t -> unit =
     "caml_cpSpaceFree" [@@noalloc]
-  external spaceSetGravity : Space.t -> Vect.t -> unit =
+  external space_set_gravity : Space.t -> Vect.t -> unit =
     "caml_cpSpaceSetGravity" [@@noalloc]
-  external spaceGetStaticBody : Space.t -> Body.t =
+  external space_get_static_body : Space.t -> Body.t =
     "caml_cpSpaceGetStaticBody"
-  external bodyFree : Body.t -> unit =
+  external body_free : Body.t -> unit =
     "caml_cpBodyFree" [@@noalloc]
-  external shapeSetFriction : Shape.t -> float -> unit =
+  external shape_set_friction : Shape.t -> float -> unit =
     "caml_cpShapeSetFriction" [@@noalloc]
-  external segmentShapeNew : Body.t -> Vect.t -> Vect.t -> float -> Shape.t
+  external segment_shape_new : Body.t -> Vect.t -> Vect.t -> float -> Shape.t
     = "caml_cpSegmentShapeNew"
-  external shapeFree : Shape.t -> unit =
+  external shape_free : Shape.t -> unit =
     "caml_cpShapeFree" [@@noalloc]
 
   (** differ from the original api *)
-  external spaceAddShape : Space.t -> Shape.t -> unit =
+  external space_add_shape : Space.t -> Shape.t -> unit =
     "caml_cpSpaceAddShape" [@@noalloc]
-  external momentForCircle : float -> float -> float -> Vect.t -> float
+  external moment_for_circle : float -> float -> float -> Vect.t -> float
     = "caml_cpMomentForCircle"
-  external bodyNew : float -> float -> Body.t
+  external body_new : float -> float -> Body.t
     = "caml_cpBodyNew"
 
   (** differ from the original api *)
-  external spaceAddBody : Space.t -> Body.t -> unit =
+  external space_add_body : Space.t -> Body.t -> unit =
     "caml_cpSpaceAddBody" [@@noalloc]
-  external bodySetPosition : Body.t -> Vect.t -> unit =
+  external body_set_position : Body.t -> Vect.t -> unit =
     "caml_cpBodySetPosition" [@@noalloc]
-  external circleShapeNew : Body.t -> float -> Vect.t -> Shape.t
+  external circle_shape_new : Body.t -> float -> Vect.t -> Shape.t
     = "caml_cpCircleShapeNew"
-  external bodyGetPosition : Body.t -> Vect.t =
+  external body_get_position : Body.t -> Vect.t =
     "caml_cpBodyGetPosition"
-  external bodyGetVelocity : Body.t -> Vect.t =
+  external body_get_velocity : Body.t -> Vect.t =
     "caml_cpBodyGetVelocity"
-  external spaceStep : Space.t -> float -> unit =
+  external space_step : Space.t -> float -> unit =
     "caml_cpSpaceStep" [@@noalloc]
-  external spaceSetIterations : Space.t -> int -> unit =
+  external space_set_iterations : Space.t -> int -> unit =
     "caml_cpSpaceSetIterations" [@@noalloc]
-  external spaceSetSleepTimeThreshold : Space.t -> float -> unit =
+  external space_set_sleep_time_threshold : Space.t -> float -> unit =
     "caml_cpSpaceSetSleepTimeThreshold" [@@noalloc]
-  external shapeSetElasticity : Shape.t -> float -> unit =
+  external shape_set_elasticity : Shape.t -> float -> unit =
     "caml_cpShapeSetElasticity" [@@noalloc]
-  external shapeSetFilter : Shape.t -> ShapeFilter.t -> unit =
+  external shape_set_filter : Shape.t -> ShapeFilter.t -> unit =
     "caml_cpShapeSetFilter"
-  external bodyNewKinematic : unit -> Body.t =
+  external body_new_kinematic : unit -> Body.t =
     "caml_cpBodyNewKinematic"
-  external momentForBox : float -> float -> float -> float =
+  external moment_for_box : float -> float -> float -> float =
     "caml_cpMomentForBox"
-  external boxShapeNew : Body.t -> float -> float -> float -> Shape.t =
+  external box_shape_new : Body.t -> float -> float -> float -> Shape.t =
     "caml_cpBoxShapeNew"
-  external pivotJointNew2 : Body.t -> Body.t -> Vect.t -> Vect.t
+  external pivot_joint_new2 : Body.t -> Body.t -> Vect.t -> Vect.t
     -> Constraint.t = "caml_cpPivotJointNew2"
-  external constraintSetMaxBias : Constraint.t -> float -> unit =
+  external constraint_set_max_bias : Constraint.t -> float -> unit =
     "caml_cpConstraintSetMaxBias"
-  external constraintSetMaxForce : Constraint.t -> float -> unit =
+  external constraint_set_max_force : Constraint.t -> float -> unit =
     "caml_cpConstraintSetMaxForce"
-  external gearJointNew : Body.t -> Body.t-> float -> float -> Constraint.t =
+  external gear_joint_new : Body.t -> Body.t-> float -> float -> Constraint.t =
     "caml_cpGearJointNew"
-  external constraintSetErrorBias : Constraint.t -> float -> unit =
+  external constraint_set_error_bias : Constraint.t -> float -> unit =
     "caml_cpConstraintSetErrorBias"
-  external spaceAddConstraint : Space.t -> Constraint.t -> unit =
+  external space_add_constraint : Space.t -> Constraint.t -> unit =
     "caml_cpSpaceAddConstraint"
-  external bodyGetRotation : Body.t -> Vect.t =
+  external body_get_rotation : Body.t -> Vect.t =
     "caml_cpBodyGetRotation"
-  external bodySetAngle : Body.t -> float -> unit =
+  external body_set_angle : Body.t -> float -> unit =
     "caml_cpBodySetAngle"
-  external bodyGetAngle : Body.t -> float =
+  external body_get_angle : Body.t -> float =
     "caml_cpBodyGetAngle"
-  external bodySetVelocity : Body.t -> Vect.t =
+  external body_set_velocity : Body.t -> Vect.t =
     "caml_cpBodySetVelocity"
-  external freeAllSpaceChildren : Space.t -> unit =
+  external free_all_space_children : Space.t -> unit =
     "caml_cpFreeAllSpaceChildren"
+
 end

@@ -1,7 +1,7 @@
 (test
  (name hello_chipmunk)
-  (libraries chipmunk unix))
+ (libraries chipmunk unix))
 
 (test
  (name tank)
-  (libraries chipmunk unix))
+ (libraries chipmunk unix))

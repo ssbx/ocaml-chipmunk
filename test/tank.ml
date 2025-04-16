@@ -14,7 +14,6 @@ let add_box space size mass =
   Cp.shape_set_elasticity shape 0.;
   Cp.shape_set_friction shape 0.7;
   body
-;;
 
 let () =
   let space = Cp.space_new () in
@@ -26,13 +25,11 @@ let () =
   let static_body = Cp.space_get_static_body space in
   print_endline "spaceGetStaticBody success";
   let _const_grabbable_filter =
-    Cp.ShapeFilter.make
-      ~group:Cp.ShapeFilter.const_no_group
+    Cp.ShapeFilter.make ~group:Cp.ShapeFilter.const_no_group
       ~categories:Cp.ShapeFilter.const_grabbable_mask_bit
       ~mask:Cp.ShapeFilter.const_grabbable_mask_bit
   and const_not_grabbable_filter =
-    Cp.ShapeFilter.make
-      ~group:Cp.ShapeFilter.const_no_group
+    Cp.ShapeFilter.make ~group:Cp.ShapeFilter.const_no_group
       ~categories:(Int.lognot Cp.ShapeFilter.const_grabbable_mask_bit)
       ~mask:(Int.lognot Cp.ShapeFilter.const_grabbable_mask_bit)
   in
@@ -64,7 +61,9 @@ let () =
   print_endline "create hedges success";
   for _ = 1 to 50 do
     let body = add_box space 20. 1. in
-    let pivot = Cp.pivot_joint_new2 static_body body Cp.Vect.zero Cp.Vect.zero in
+    let pivot =
+      Cp.pivot_joint_new2 static_body body Cp.Vect.zero Cp.Vect.zero
+    in
     Cp.space_add_constraint space pivot;
     Cp.constraint_set_max_bias pivot 0.;
     Cp.constraint_set_max_force pivot 1000.;
@@ -76,7 +75,9 @@ let () =
   let tank_control_body = Cp.body_new_kinematic () in
   Cp.space_add_body space tank_control_body;
   let tank_body = add_box space 30. 10. in
-  let pivot = Cp.pivot_joint_new2 tank_control_body tank_body Cp.Vect.zero Cp.Vect.zero in
+  let pivot =
+    Cp.pivot_joint_new2 tank_control_body tank_body Cp.Vect.zero Cp.Vect.zero
+  in
   Cp.space_add_constraint space pivot;
   Cp.constraint_set_max_bias pivot 0.;
   Cp.constraint_set_max_force pivot 100000.;
@@ -88,4 +89,3 @@ let () =
   Cp.free_all_space_children space;
   Cp.space_free space;
   print_endline "spaceFree success"
-;;

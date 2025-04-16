@@ -101,3 +101,12 @@ caml_cpSpaceAddConstraint(value space, value constraint)
     CAMLreturn(Val_unit);
 }
 
+CAMLprim value
+caml_cpSpaceUseSpatialHash(value space, value dim, value count)
+{
+    CAMLparam3(space, dim, count);
+    cpSpaceUseSpatialHash(cpSpace_Val(space), Double_val(dim), Int_val(count));
+    CAMLreturn(Val_unit);
+}
+
+

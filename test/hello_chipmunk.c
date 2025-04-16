@@ -60,5 +60,7 @@ int main(void){
   cpShapeFree(ground);
   cpSpaceFree(space);
   
+  printf("infinity is %f\n", INFINITY);
+
   return 0;
 }

@@ -84,6 +84,16 @@ caml_cpShapeSetFilter(value shape, value _filter)
     CAMLreturn(Val_unit);
 }
 
+CAMLprim value
+caml_cpShapeGetBody(value shape)
+{
+    CAMLparam1(shape);
+    cpBody* body = cpShapeGetBody(cpShape_Val(shape));
+    CAMLreturn(Val_cpBody(body));
+}
+
+
+
 
 
 
